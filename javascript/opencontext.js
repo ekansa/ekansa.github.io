@@ -33,6 +33,7 @@ function OpenContextAPI() {
 		// function to display results of a request for data
 		this.data = data;
 		console.log(data);
+		this.show_facets();
 	}
 	this.show_facets = function(){
 		var act_dom = this.get_facets_dom();
