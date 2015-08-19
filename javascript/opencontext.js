@@ -37,7 +37,7 @@ function OpenContextAPI() {
 	}
 	this.show_facets = function(){
 		var act_dom = this.get_facets_dom();
-		if (var_dom != false) {
+		if (act_dom != false) {
 			var html = '';
 			var data = this.data;
 			if ('totalResults' in data) {
@@ -57,7 +57,7 @@ function OpenContextAPI() {
 					html += facet_html;
 				}
 			}
-			var_dom.innerHTML = html;
+			act_dom.innerHTML = html;
 		}
 	}
 	this.make_facet_values_html = function(facet){
