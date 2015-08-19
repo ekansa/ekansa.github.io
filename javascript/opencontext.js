@@ -11,6 +11,7 @@ function OpenContextAPI() {
 	this.api_url = false;
 	this.data = false;
 	this.facets_dom_id = 'facets';
+	this.filters_dom_id = 'filters';
 	
 	/* This is for a Lealet Map, which displays geospatial data from the search */
 	this.map_dom_id = 'map';
@@ -66,6 +67,8 @@ function OpenContextAPI() {
 		console.log(data);
 		// show facets + facet values
 		this.show_facets();
+		// show filters on the data
+		this.show_filters();
 		// now show the geojson data using the Leaflet Map
 		this.map.render_region_layer(data);
 	}
@@ -119,7 +122,35 @@ function OpenContextAPI() {
 		html += '</a>';
 		return html;
 	}
+	this.show_filters = function(){
+		// function to display filers as needed
+		var act_dom = this.get_filters_dom();
+		if (act_dom != false) {
+			// we've got a dom place to add filters too
+			var data = this.data;
+			if ('oc-api:active-filters' in data) {
+				// the data has filters
+				var html = '<ul>';
+				for (var i = 0, length = data['oc-api:active-filters'].length; i < length; i++) {
+					var filter = data['oc-api:active-filters'][i];
+					html += this.make_filter_html(filter);
+				}
+				html += '</ul>';
+				act_dom.innerHTML = html;
+			}
+		}
+	}
+	this.make_filter_html = function(filter){
+		var html = '<li>';
+		html += '<a title="Click to remove this filter" ';
+		html += 'href="javascript:oc_obj.change(\'' + filter['oc-api:remove'] + '\')">';
+		html += filter.label;
+		html += '</li>';
+		return html;
+	}
 	this.change = function(change_url){
+		// this function is executed when a user clicks on a link
+		// to add a filter or remove a filter
 		this.api_url = change_url;
 		this.get_data();
 	}
@@ -144,5 +175,13 @@ function OpenContextAPI() {
 		}
 		return act_dom;
 	}
-	
+	this.get_filters_dom = function(){
+		var act_dom = false;
+		if (this.filters_dom_id != false) {
+			if (document.getElementById(this.filters_dom_id)) {
+				act_dom = document.getElementById(this.filters_dom_id);
+			}
+		}
+		return act_dom;
+	}
 }
