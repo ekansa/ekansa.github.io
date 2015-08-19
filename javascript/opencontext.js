@@ -114,13 +114,13 @@ function OpenContextAPI() {
 	}
 	this.make_facet_val_link = function(val_item){
 		var html = '<a title="Filter by this value" ';
-		html += 'href="javascript:oc_obj.filter(\'' + val_item.id + '\')">';
+		html += 'href="javascript:oc_obj.change(\'' + val_item.id + '\')">';
 		html += val_item.label;
 		html += '</a>';
 		return html;
 	}
-	this.filter = function(filter_url){
-		this.api_url = filter_url;
+	this.change = function(change_url){
+		this.api_url = change_url;
 		this.get_data();
 	}
 	this.get_dataError = function(){
