@@ -71,7 +71,7 @@ function OpenContextAPI() {
 		}
 		for (var i = 0, length = value_list.length; i < length; i++) {
 			var val_item = value_list[i];
-			var val_html = val_item.label + '( + val_item.label + )';
+			var val_html = val_item.label + '(' + val_item.count + ')';
 			html_list.push(val_html);
 		}
 		var html = html_list.join(', ');
