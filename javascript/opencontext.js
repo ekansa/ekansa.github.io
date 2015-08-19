@@ -68,7 +68,7 @@ function OpenContextAPI() {
 		// show facets + facet values
 		this.show_facets();
 		// show filters on the data
-		this.show_filters();
+		//this.show_filters();
 		// now show the geojson data using the Leaflet Map
 		this.map.render_region_layer(data);
 	}
