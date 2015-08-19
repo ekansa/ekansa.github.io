@@ -71,11 +71,22 @@ function OpenContextAPI() {
 		}
 		for (var i = 0, length = value_list.length; i < length; i++) {
 			var val_item = value_list[i];
-			var val_html = val_item.label + '(' + val_item.count + ')';
+			var val_html = this.make_facet_val_link(val_item) + ' (' + val_item.count + ')';
 			html_list.push(val_html);
 		}
 		var html = html_list.join(', ');
 		return html;
+	}
+	this.make_facet_val_link = function(val_item){
+		var html = '<a title="Filter by this value" ';
+		html += 'onclick="oc_obj.filter(\'' + val_item.id + '\')">';
+		html += val_item.label;
+		html += '</a>';
+		return html;
+	}
+	this.filter = function(filter_url){
+		this.api_url = filter_url;
+		this.get_data();
 	}
 	this.get_dataError = function(){
 		var act_dom = this.get_facets_dom();
