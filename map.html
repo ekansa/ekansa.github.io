@@ -3,6 +3,7 @@
     <title>Open Context API Test</title>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://leafletjs.com/dist/leaflet.js"></script>
+    <script src="../javascript/opencontext.js"></script>
     <link rel="stylesheet" type="text/css" href="http://leafletjs.com/dist/leaflet.css" />
     <link rel="stylesheet" href="http://opencontext.dainst.org/static/bootstrap/3.3.4/css/bootstrap.min.css">
     <script src="http://opencontext.dainst.org/static/bootstrap/3.3.4/js/bootstrap.js"></script>
@@ -25,9 +26,19 @@
   <body>
     <div id="oc-data">
       <h1>Map Test of Open Context API</h1>
+      <div class="container-fluid">
+	<div id="facets" class="well">
+	  Facets go here...
+	</div>
+	<div id="map">
+	  map
+	</div>
+      </div>
     </div>
     <script type="text/javascript">
-        
+      var oc_obj = new OpenContextAPI();
+      oc_obj.api_url = 'http://opencontext.dainst.org/sets/Italy?proj=24-murlo';
+      oc_obj.get_data();
     </script>
   </body>
 </html>
