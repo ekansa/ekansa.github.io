@@ -1,2 +1,2 @@
-# map.github.io
-Map API Demo
+
+# Map API Demo
