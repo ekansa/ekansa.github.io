@@ -12,6 +12,28 @@ function OpenContextAPI() {
 	this.data = false;
 	this.facets_dom_id = 'facets';
 	this.map_dom_id = 'map';
+	map = L.map(this.map_dom_id);
+	this.bounds = new L.LatLngBounds();
+	
+	var osmTiles = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	});
+	var ESRISatelliteTiles = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+		attribution: '&copy; <a href="http://services.arcgisonline.com/">ESRI.com</a> '
+	});
+	var baseMaps = {
+		"ESRI-Satellite": ESRISatelliteTiles,
+		"OpenStreetMap": osmTiles,
+	};
+	map._layersMaxZoom = 20;
+	var layerControl = L.control.layers(baseMaps).addTo(map);
+	map.addLayer(osmTiles);
+	map.render_region_layer = function(data){
+		var region_layer = L.geoJson(data);
+		map.fitBounds(region_layer.getBounds());
+		region_layer.addTo(map);
+	}
+	this.map = map;
 	this.get_data = function() {
 		// calls the Open Context API to get data
 		var url = this.api_url;
@@ -32,8 +54,10 @@ function OpenContextAPI() {
 	this.get_dataDone = function(data){
 		// function to display results of a request for data
 		this.data = data;
+		this.map.data = data;
 		console.log(data);
 		this.show_facets();
+		this.map.render_region_layer(data);
 	}
 	this.show_facets = function(){
 		var act_dom = this.get_facets_dom();
