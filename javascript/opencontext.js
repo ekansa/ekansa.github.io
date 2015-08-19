@@ -42,7 +42,7 @@ function OpenContextAPI() {
 			var data = this.data;
 			if ('totalResults' in data) {
 				// show the total number of records found
-				html += 'Open Context Records: <span class="badge">' + data['totalResults'] + '</span>'
+				html += '<h3>Open Context Records: <span class="badge">' + data['totalResults'] + '</span></h3>';
 			}
 			if ('oc-api:has-facets' in data) {
 				// show some search facets
