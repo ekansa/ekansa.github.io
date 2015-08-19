@@ -130,12 +130,15 @@ function OpenContextAPI() {
 			var data = this.data;
 			if ('oc-api:active-filters' in data) {
 				// the data has filters
-				var html = '<ul>';
+				html += '<div class="well small">';
+				html += '<h4>Filters on the data</h4>';
+				html += '<ul>';
 				for (var i = 0, length = data['oc-api:active-filters'].length; i < length; i++) {
 					var filter = data['oc-api:active-filters'][i];
 					html += this.make_filter_html(filter);
 				}
 				html += '</ul>';
+				html += '</div>';
 				act_dom.innerHTML = html;
 			}
 		}
