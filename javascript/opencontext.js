@@ -8,6 +8,7 @@
 function OpenContextAPI() {
 	/* Object for runing searches + displaying results from Open Context */
 	this.name = "opencontext"; //object name, used for DOM-ID prefixes and object labeling
+	this.api_root = 'http://opencontext.org/';
 	this.api_url = false;
 	this.data = false;
 	this.facets_dom_id = 'facets';
@@ -65,7 +66,12 @@ function OpenContextAPI() {
 		var url = this.api_url;
 		var hash = window.location.hash;
 		if (hash) {
-			url = hash;
+			if (hash.indexOf(this.api_root) > -1) {
+				url = hash;
+			}
+			else{
+				url = this.api_root + hash;
+			}
 		}
 		return url;
 	}
@@ -167,6 +173,7 @@ function OpenContextAPI() {
 		this.get_data();
 	}
 	this.change_frag_id = function(new_frag){
+		new_frag = new_frag.replace(this.api_root, '');
 		window.location.hash = new_frag;
 	}
 	this.get_dataError = function(){
