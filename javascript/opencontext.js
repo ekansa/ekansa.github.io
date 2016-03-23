@@ -72,8 +72,9 @@ function OpenContextAPI() {
 		}
 		else{
 			// checking for a hashed url
-			var hash = window.location.hash;
-			if (hash) {
+			var hash_exists = window.location.hash;
+			if (hash_exists){
+				var hash = window.location.hash.substring(1);
 				if (hash.indexOf(this.api_root) > -1) {
 					url = hash;
 				}
