@@ -9,6 +9,7 @@ function OpenContextAPI() {
 	/* Object for runing searches + displaying results from Open Context */
 	this.name = "opencontext"; //object name, used for DOM-ID prefixes and object labeling
 	this.api_root = 'http://opencontext.org/';
+	this.api_start_url = 'http://opencontext.org/subjects-search/';
 	this.api_url = false;
 	this.data = false;
 	this.facets_dom_id = 'facets';
@@ -63,20 +64,29 @@ function OpenContextAPI() {
 		}
 	}
 	this.get_api_url = function(){
-		var url = this.api_url;
-		var hash = window.location.hash;
-		if (hash) {
-			if (hash.indexOf(this.api_root) > -1) {
-				url = hash;
-			}
-			else{
-				url = this.api_root + hash;
-			}
+		// default to the api_start_url
+		var url = this.api_start_url;
+		if (this.api_url != false) {
+			// we've got a requested url
+			url = this.api_url;
+		}
+		else{
+			// checking for a hashed url
+			var hash = window.location.hash;
+			if (hash) {
+				if (hash.indexOf(this.api_root) > -1) {
+					url = hash;
+				}
+				else{
+					url = this.api_root + hash;
+				}
+			}	
 		}
 		return url;
 	}
 	this.get_dataDone = function(data){
 		// function to display results of a request for data
+		this.api_url = false; //set to false now that data is done.
 		this.data = data;
 		console.log(data);
 		// show facets + facet values
