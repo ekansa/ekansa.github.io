@@ -43,9 +43,6 @@ function OpenContextAPI() {
 		map.oc_layer = region_layer;
 	}
 	this.map = map;
-	$(window).on('hashchange', function(this) {
-		this.get_data();
-	});
 	this.get_data = function() {
 		// calls the Open Context API to get data
 		var url = this.get_api_url();

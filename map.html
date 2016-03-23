@@ -48,6 +48,9 @@
       var oc_obj = new OpenContextAPI();
       oc_obj.api_url = 'http://opencontext.org/subjects-search/United+States.json?proj=52-digital-index-of-north-american-archaeology-dinaa';
       oc_obj.get_data();
+	  $(window).on('hashchange', function() {
+		oc_obj.get_data();
+	  });
     </script>
   </body>
 </html>
