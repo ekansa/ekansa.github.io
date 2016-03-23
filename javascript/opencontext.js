@@ -45,7 +45,7 @@ function OpenContextAPI() {
 	this.map = map;
 	this.get_data = function() {
 		// calls the Open Context API to get data
-		var url = this.api_url;
+		var url = this.get_api_url();
 		if (url != false) {
 			return $.ajax({
 				type: "GET",
@@ -60,6 +60,14 @@ function OpenContextAPI() {
 				error: this.get_dataError //error message display
 			});
 		}
+	}
+	this.get_api_url = function(){
+		var url = this.api_url;
+		var hash = window.location.hash;
+		if (hash) {
+			url = hash;
+		}
+		return url;
 	}
 	this.get_dataDone = function(data){
 		// function to display results of a request for data
