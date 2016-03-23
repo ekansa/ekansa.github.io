@@ -154,8 +154,13 @@ function OpenContextAPI() {
 	this.change = function(change_url){
 		// this function is executed when a user clicks on a link
 		// to add a filter or remove a filter
+		this.change_frag_id(change_frag_id);
 		this.api_url = change_url;
 		this.get_data();
+	}
+	this.change_frag_id = function(new_frag){
+		var hash = document.location.hash;
+		window.location.hash = hash.replace("#", "#" + new_frag);
 	}
 	this.get_dataError = function(){
 		var act_dom = this.get_facets_dom();
