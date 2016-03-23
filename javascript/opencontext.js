@@ -43,7 +43,7 @@ function OpenContextAPI() {
 		map.oc_layer = region_layer;
 	}
 	this.map = map;
-	$(window).on('hashchange', function() {
+	$(window).on('hashchange', function(this) {
 		this.get_data();
 	});
 	this.get_data = function() {
