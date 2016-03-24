@@ -4,27 +4,29 @@
   </head>
 
   <body>
-    <div id="oc-data">
+	<div id="oc-style-zone">
+	  <div id="oc-data">
+	  </div>
+	  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	  <script src="../javascript/opencontext.js"></script>
+	  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+	  <link rel="stylesheet" href="http://opencontext.org/static/bootstrap/3.3.4/css/bootstrap.min.css">
+	  <script src="http://opencontext.org/static/bootstrap/3.3.4/js/bootstrap.js"></script>
+	  <script type="text/javascript">
+		var oc_settings = {
+		  'title': 'DINAA via the Open Context API',
+		  'root_dom_id': 'oc-data',
+		  'api_start_url': 'http://opencontext.org/subjects-search/United+States.json?proj=52-digital-index-of-north-american-archaeology-dinaa'
+		};
+		var oc_obj = new OpenContextAPI(oc_settings);
+		oc_obj.start();
+		$(window).on('hashchange', function() {
+		  oc_obj.get_data();
+		});
+	  </script>
 	</div>
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-    <script src="../javascript/opencontext.js"></script>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-    <link rel="stylesheet" href="http://opencontext.org/static/bootstrap/3.3.4/css/bootstrap.min.css">
-    <script src="http://opencontext.org/static/bootstrap/3.3.4/js/bootstrap.js"></script>
-    <script type="text/javascript">
-	  var oc_settings = {
-		'title': 'DINAA via the Open Context API',
-		'root_dom_id': 'oc-data',
-		'api_start_url': 'http://opencontext.org/subjects-search/United+States.json?proj=52-digital-index-of-north-american-archaeology-dinaa'
-	  };
-      var oc_obj = new OpenContextAPI(oc_settings);
-	  oc_obj.start();
-	  $(window).on('hashchange', function() {
-		oc_obj.get_data();
-	  });
-    </script>
-	<p>Demonstration javascript client for interacting with the Open Context API. Feel free to
+	<p style="text-align:center;">Demonstration javascript client for interacting with the Open Context API. Feel free to
 	fork from <a href="https://github.com/ekansa/ekansa.github.io">GitHub</a>.
 	</p>
   </body>
