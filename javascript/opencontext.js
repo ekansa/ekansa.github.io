@@ -5,46 +5,59 @@
 */
 
 
-function OpenContextAPI() {
+function OpenContextAPI(settings) {
 	/* Object for runing searches + displaying results from Open Context */
 	this.name = "opencontext"; //object name, used for DOM-ID prefixes and object labeling
+	this.root_dom_id = settings['api_start_url'];
+	this.title = settings['title'];
 	this.api_root = 'http://opencontext.org/';
-	this.api_start_url = 'http://opencontext.org/subjects-search/';
+	this.api_start_url = settings['api_start_url'];
 	this.api_url = false;
 	this.data = false;
 	this.facets_dom_id = 'facets';
 	this.filters_dom_id = 'filters';
 	
 	/* This is for a Lealet Map, which displays geospatial data from the search */
-	this.map_dom_id = 'map';
-	map = L.map(this.map_dom_id);
-	this.bounds = new L.LatLngBounds();
-	var osmTiles = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-	});
-	var ESRISatelliteTiles = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-		attribution: '&copy; <a href="http://services.arcgisonline.com/">ESRI.com</a> '
-	});
-	var baseMaps = {
-		"ESRI-Satellite": ESRISatelliteTiles,
-		"OpenStreetMap": osmTiles,
-	};
-	map._layersMaxZoom = 20;
-	var layerControl = L.control.layers(baseMaps).addTo(map);
-	map.addLayer(osmTiles);
-	map.oc_layer = false;
-	map.render_region_layer = function(data){
-		// this can get much more elaborate to add style
-		// and callouts for map layers, but it's a first stab
-		if (map.oc_layer != false) {
-			map.removeLayer(map.oc_layer);
-		}
-		var region_layer = L.geoJson(data);
-		map.fitBounds(region_layer.getBounds());
-		region_layer.addTo(map);
-		map.oc_layer = region_layer;
+	this.map_dom_id = false;
+	this.map = false;
+	
+	/* This builds HTML dom elements to fill with data, and creates an element for the map */
+	this.start = function(){
+		this.start_html();
+		this.start_map();
+		this.get_data();
 	}
-	this.map = map;
+	
+	this.start_map = function(){
+		map = L.map(this.map_dom_id);
+		this.bounds = new L.LatLngBounds();
+		var osmTiles = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		});
+		var ESRISatelliteTiles = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+			attribution: '&copy; <a href="http://services.arcgisonline.com/">ESRI.com</a> '
+		});
+		var baseMaps = {
+			"ESRI-Satellite": ESRISatelliteTiles,
+			"OpenStreetMap": osmTiles,
+		};
+		map._layersMaxZoom = 20;
+		var layerControl = L.control.layers(baseMaps).addTo(map);
+		map.addLayer(osmTiles);
+		map.oc_layer = false;
+		map.render_region_layer = function(data){
+			// this can get much more elaborate to add style
+			// and callouts for map layers, but it's a first stab
+			if (map.oc_layer != false) {
+				map.removeLayer(map.oc_layer);
+			}
+			var region_layer = L.geoJson(data);
+			map.fitBounds(region_layer.getBounds());
+			region_layer.addTo(map);
+			map.oc_layer = region_layer;
+		}
+		this.map = map;
+	}
 	this.get_data = function() {
 		// calls the Open Context API to get data
 		var url = this.get_api_url();
@@ -102,10 +115,7 @@ function OpenContextAPI() {
 		if (act_dom != false) {
 			var html = '';
 			var data = this.data;
-			if ('totalResults' in data) {
-				// show the total number of records found
-				html += '<h3>Open Context Records: <span class="badge">' + data['totalResults'] + '</span></h3>';
-			}
+			html += '<h3>Filter Records</h3>';
 			if ('oc-api:has-facets' in data) {
 				// show some search facets
 				for (var i = 0, length = data['oc-api:has-facets'].length; i < length; i++) {
@@ -216,5 +226,44 @@ function OpenContextAPI() {
 			}
 		}
 		return act_dom;
+	}
+	this.start_html = function(){
+		// builds the initial HTML for
+		// map, facets, filters, and results
+		var ok = false;
+		var act_dom = false;
+		if (document.getElementById(this.root_dom_id)) {
+			act_dom = document.getElementById(this.root_dom_id);
+		}
+		if (act_dom != false) {
+			this.map_dom_id = this.root_dom_id + '_map';
+			this.facets_dom_id = this.root_dom_id + '_facets';
+			this.filters_dom_id = this.root_dom_id + '_filters';
+			var html = [
+			'<div class="container-fluid">',
+				'<h1>' + this.title + '</h1>',
+				'<div id="' + this.map_dom_id + '">',
+				'Preparing map...',
+				'</div>',
+			'</div>',
+			'<div class="container-fluid">',
+				'<div class="row">',
+					'<div class="col-xs-8">',
+						'<div id="' + this.facets_dom_id + '" class="well">',
+							'Loading filters here...',
+						'</div>',
+					'</div>',
+					'<div id="' + this.filters_dom_id  + '" class="col-xs-4">',
+					'</div>',
+				'</div>',
+			'</div>'		
+			].join('\n');
+			act_dom.innerHTML = html;
+			ok = true;
+		}
+		else{
+			alert('Check your settings. Could not construct HTML in: ' + this.root_dom_id);
+		}
+		return ok;
 	}
 }
