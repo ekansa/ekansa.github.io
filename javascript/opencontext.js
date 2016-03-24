@@ -8,7 +8,7 @@
 function OpenContextAPI(settings) {
 	/* Object for runing searches + displaying results from Open Context */
 	this.name = "opencontext"; //object name, used for DOM-ID prefixes and object labeling
-	this.root_dom_id = settings['api_start_url'];
+	this.root_dom_id = settings['root_dom_id'];
 	this.title = settings['title'];
 	this.api_root = 'http://opencontext.org/';
 	this.api_start_url = settings['api_start_url'];
