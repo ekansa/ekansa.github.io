@@ -8,10 +8,11 @@
 function OpenContextAPI(settings) {
 	/* Object for runing searches + displaying results from Open Context */
 	this.name = "opencontext"; //object name, used for DOM-ID prefixes and object labeling
-	this.root_dom_id = settings['root_dom_id'];
-	this.title = settings['title'];
+	this.settings = settings;
+	this.root_dom_id = 'opencontext_data';
+	this.title = 'Open Context Search Results';
 	this.api_root = 'http://opencontext.org/';
-	this.api_start_url = settings['api_start_url'];
+	this.api_start_url = 'http://opencontext.org/subjects-search/';
 	this.api_url = false;
 	this.data = false;
 	this.facets_dom_id = 'facets';
@@ -19,13 +20,30 @@ function OpenContextAPI(settings) {
 	
 	/* This is for a Lealet Map, which displays geospatial data from the search */
 	this.map_dom_id = false;
+	this.map_height_px = 500;
 	this.map = false;
 	
 	/* This builds HTML dom elements to fill with data, and creates an element for the map */
 	this.start = function(){
+		this.intialize_settings();
 		this.start_html();
 		this.start_map();
 		this.get_data();
+	}
+	this.intialize_settings = function(){
+		// sets different object attributes to settings passed to the object
+		if ('root_dom_id' in this.settings) {
+			this.root_dom_id = this.settings['root_dom_id'];
+		}
+		if ('api_start_url' in this.settings) {
+			this.api_start_url = this.settings['api_start_url'];
+		}
+		if ('title' in this.settings) {
+			this.title = settings['title'];
+		}
+		if ('map_height_px' in this.settings) {
+			this.map_height_px = settings['map_height_px'];
+		}
 	}
 	
 	this.start_map = function(){
@@ -240,6 +258,16 @@ function OpenContextAPI(settings) {
 			this.facets_dom_id = this.root_dom_id + '_facets';
 			this.filters_dom_id = this.root_dom_id + '_filters';
 			var html = [
+			'<style type="text/css">',
+				'#' + this.root_dom_id + ' {',
+					'padding:2%;',
+				'}',
+				'#' + this.map_dom_id  + ' {',
+					'width:100%;',
+					'height:' + this.map_height_px + 'px;',
+					'margin-bottom: 5px;',
+				'}',
+			'</style>',
 			'<div class="container-fluid">',
 				'<h1>' + this.title + '</h1>',
 				'<div id="' + this.map_dom_id + '">',
