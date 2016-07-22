@@ -194,13 +194,15 @@ function OpenContextSimpleAPI() {
 			record_html += 'src="' + thumb + '" class="img-responsive" />';
 			record_html += '</a>';
 			record_html += '<div class="caption">';
-			record_html += '<h3>' + record.label + '</h3>';
+			record_html += '<h5 class="text-center">Item:</hg>';
+			record_html += '<h4 class="text-center">' + record.label + '</h4>';
 			record_html += '</div>';
 			record_html += '</div>';
 		}
 		else{
+			record_html += '<h5 class="text-center">Item:</hg>';
 			record_html += '<a href="' + record.uri + '" target="_blank">';
-			record_html += '<h3>' + record.label + '</h3>';
+			record_html += '<h4 class="text-center">' + record.label + '</h4>';
 			record_html += '</a>';
 		}
 		record_html += '</div>';
