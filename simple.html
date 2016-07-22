@@ -5,16 +5,18 @@
 
   <body>
 	<div id="oc-style-zone">
-	  <div id="oc-search-form" "">
-		<form>
-		  <div class="form-group">
-			<label for="oc-keyword-search">Search Open Context</label>
-			<input type="text" class="form-control" id="oc-keyword-search" placeholder="Keyword Search">
-			<p class="help-block">This demonstates the Open Context API to use for
-			a simple keyword search functions.</p>
-		  </div>
-		  <button class="btn btn-default" onclick="oc_obj.search(); return false;">Search</button>
-		</form>
+	  <div class="row">
+		<div id="oc-search-form" class="col-md-6 col-md-offset-3">
+		  <form>
+			<div class="form-group">
+			  <label for="oc-keyword-search">Search Open Context</label>
+			  <input type="text" class="form-control" id="oc-keyword-search" placeholder="Keyword Search">
+			  <p class="help-block">This demonstates the Open Context API to use for
+			  a simple keyword search functions.</p>
+			</div>
+			<button class="btn btn-default" onclick="oc_obj.search(); return false;">Search</button>
+		  </form>
+		</div>
 	  </div>
 	  <div id="oc-results">
 	  </div>
