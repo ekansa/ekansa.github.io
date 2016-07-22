@@ -5,7 +5,7 @@
 
   <body>
 	<div id="oc-style-zone">
-	  <div id="oc-search-form">
+	  <div id="oc-search-form" "">
 		<form>
 		  <div class="form-group">
 			<label for="oc-keyword-search">Search Open Context</label>
@@ -14,7 +14,7 @@
 			a simple keyword search functions.</p>
 		  </div>
 		  <button type="submit" class="btn btn-default" onclick="oc_obj.search();">Search</button>
-		</div>
+		</form>
 	  </div>
 	  <div id="oc-results">
 	  </div>
@@ -54,12 +54,6 @@
 		// order search results by item label, in ascending order
 		oc_obj.sort = 'item--asc';
 		
-		
-		
-		oc_obj.start();
-		$(window).on('hashchange', function() {
-		  oc_obj.get_data();
-		});
 	  </script>
 	</div>
 	<p style="text-align:center;">To see a demonstration of a simple javascript client for keyword
