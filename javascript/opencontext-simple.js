@@ -27,7 +27,8 @@ function OpenContextSimpleAPI() {
 			var query = document.getElementById(this.keyword_dom_id).value;
 			
 			// now run the AJAX request to Open Context's API
-			return this.get_search_data(query);
+			this.get_search_data(query);
+			return false;
 		}
 		else{
 			// cannot find the DOM element for the search box
@@ -96,7 +97,7 @@ function OpenContextSimpleAPI() {
 		// console.log is for debugging, it stores data for inspection
 		// with a brower's javascript debugging tools
 		console.log(data);
-		return true;
+		return false;
 	}
 	this.set_parameters = function(){
 		// this function sets the parameters used to filter a search,
