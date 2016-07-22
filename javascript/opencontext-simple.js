@@ -103,7 +103,7 @@ function OpenContextSimpleAPI() {
 		// this function sets the parameters used to filter a search,
 		// page through results, request additional attributes for search results
 		// and sort the search results
-		paras = {}; // default, empty search parameters
+		params = {}; // default, empty search parameters
 		if (this.url == null) {
 			// builds the parameters only if we don't have them
 			// already specified in a query URL
