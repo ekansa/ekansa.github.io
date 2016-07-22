@@ -49,7 +49,11 @@
 		  <form>
 			<div class="form-group">
 			  <label for="oc-keyword-search">Search Open Context</label>
-			  <input type="text" class="form-control" id="oc-keyword-search" placeholder="Keyword Search">
+			  <input type="text"
+					 class="form-control"
+					 onchange="oc_obj.search();return false;"
+					 id="oc-keyword-search"
+					 placeholder="Keyword Search">
 			  <p class="help-block">This demonstates the Open Context API to use for
 			  a simple keyword search functions.</p>
 			  <p class="help-block">This current demo is set limit searches to search
