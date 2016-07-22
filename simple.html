@@ -46,12 +46,12 @@
 	<div id="oc-style-zone">
 	  <div class="row">
 		<div id="oc-search-form" class="col-xs-6 col-xs-offset-3">
-		  <form>
+		  
 			<div class="form-group">
 			  <label for="oc-keyword-search">Search Open Context</label>
 			  <input type="search"
 					 class="form-control"
-					 oninput="oc_obj.search();return false;"
+					 onchange="oc_obj.search();return false;"
 					 id="oc-keyword-search"
 					 placeholder="Keyword Search">
 			  <p class="help-block">This demonstates the Open Context API to use for
@@ -60,7 +60,7 @@
 			  within object records of the Ft. Snelling project.</p>
 			</div>
 			<button type="button" class="btn btn-default" onclick="oc_obj.search();return false;">Search</button>
-		  </form>
+		  
 		</div>
 	  </div>
 	  <div id="oc-results" class="container-fluid">
