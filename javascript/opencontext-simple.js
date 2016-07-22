@@ -92,9 +92,11 @@ function OpenContextSimpleAPI() {
 	this.get_dataDone = function(data){
 		// function to display results of a request for data
 		this.data = data;
+		alert('Found: ' + this.data.totalResults);
 		// console.log is for debugging, it stores data for inspection
 		// with a brower's javascript debugging tools
 		console.log(data);
+		return true;
 	}
 	this.set_parameters = function(){
 		// this function sets the parameters used to filter a search,
