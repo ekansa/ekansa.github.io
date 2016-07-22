@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>Open Context API Test</title>
+  </head>
+
+  <body>
+	<div id="oc-style-zone">
+	  <div id="oc-search-form">
+		<form>
+		  <div class="form-group">
+			<label for="oc-keyword-search">Search Open Context</label>
+			<input type="text" class="form-control" id="oc-keyword-search" placeholder="Keyword Search">
+			<p class="help-block">This demonstates the Open Context API to use for
+			a simple keyword search functions.</p>
+		  </div>
+		  <button type="submit" class="btn btn-default" onclick="oc_obj.search();">Search</button>
+		</div>
+	  </div>
+	  <div id="oc-results">
+	  </div>
+	  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	  <script src="../javascript/opencontext-simple.js"></script>
+  	  <link rel="stylesheet" href="http://opencontext.org/static/bootstrap/3.3.4/css/bootstrap.min.css">
+	  <script src="http://opencontext.org/static/bootstrap/3.3.4/js/bootstrap.js"></script>
+	  <script type="text/javascript">
+		/*
+		 * the oc_obj is an "object" with some code to interact with Open Context's API
+		 * it uses the "simple" JSON results from Open Context, so it does not include GeoJSON or
+		 * facet information
+		 */
+		var oc_obj = new OpenContextSimpleAPI();
+		
+		/*
+		 * Now that we created the oc_obj, we can set some default filters
+		 * to limit searches to a subset of all of data published by Open Context.
+		 * This allows you to customize the search experience to focus on cetain
+		 * types of records from certain projects.
+		 */
+		
+		// limit searches to the 'Virtual Valdivia' project
+		// we use javascript 'push' because projects_slugs is list. You can add
+		// multiple projects in this list, allowing you to search within multiple projects
+		oc_obj.project_slugs.push('90-virtual-valdivia');
+		
+		// limit searchs to pottery records only (so we ignore loci, trenches, etc.)
+		// we use javascript 'push' because category_slugs is list. You can add
+		// multiple categories to this list, allowing you to search within multiple categories
+		// of records
+		oc_obj.category_slugs.push('oc-gen-cat-pottery');
+		
+		// make sure we get a thumbnail for a picture associated with the search result
+		oc_obj.attribute_slugs.push('thumbnail');
+		
+		// order search results by item label, in ascending order
+		oc_obj.sort = 'item--asc';
+		
+		
+		
+		oc_obj.start();
+		$(window).on('hashchange', function() {
+		  oc_obj.get_data();
+		});
+	  </script>
+	</div>
+	<p style="text-align:center;">To see a demonstration of a simple javascript client for keyword
+	searches, <a href="../simple.html">click here</a>.
+	</p>
+	<p style="text-align:center;">Demonstration javascript client for interacting with the Open Context API. Feel free to
+	fork from <a href="https://github.com/ekansa/ekansa.github.io">GitHub</a>.
+	</p>
+  </body>
+</html>

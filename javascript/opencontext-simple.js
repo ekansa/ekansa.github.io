@@ -8,11 +8,11 @@
 
 function OpenContextSimpleAPI() {
 	/* Object for runing searches + displaying results from Open Context */
-	this.name = 'oc-simple'; //object name, used for DOM-ID prefixes and object labeling
 	this.default_api_url = 'http://opencontext.org/subjects-search/';
 	this.url = null;
 	this.data = null;
-	this.results_dom_id = 'oc-results';
+	this.keyword_dom_id = 'oc-keyword-search'; // DOM ID for the keyword search text input from user
+	this.results_dom_id = 'oc-results'; // DOM ID for where to put HTML displaying search results
 	this.response = 'metadata,uri-meta';
 	this.project_slugs = [];
 	this.category_slugs = [];
@@ -20,8 +20,30 @@ function OpenContextSimpleAPI() {
 	this.sort = null;
 	this.record_start = 0;  // the start number for the results
 	this.record_rows = 20;  // the number of rows returned in a search result
+	this.search = function(){
+		if (document.getElementById(this.keyword_dom_id)) {
+			// found the DOM element for the search box
+			// the value of the search box is the search keyword input by the user
+			var query = document.getElementById(this.keyword_dom_id).value;
+			
+			// now run the AJAX request to Open Context's API
+			return this.get_search_data(query);
+		}
+		else{
+			// cannot find the DOM element for the search box
+			// alert with an error message.
+			var error = [
+			'Cannot find text input for search, ',
+			'set the "keyword_dom_id" attribute for this object ',
+			'to indicate the ID of the text search box used for ',
+			'keyword searches'
+			].join('\n');
+			alert(error);
+			return false;
+		}
+	}
 	this.get_data = function() {
-		// calls the Open Context API to get data
+		// calls the Open Context API to get data, not yet filtered with a keyword search
 		if (this.url != null) {
 			// we've got a search API URL specified
 			// which already has additional parameters in it
@@ -70,13 +92,9 @@ function OpenContextSimpleAPI() {
 	this.get_dataDone = function(data){
 		// function to display results of a request for data
 		this.data = data;
+		// console.log is for debugging, it stores data for inspection
+		// with a brower's javascript debugging tools
 		console.log(data);
-		// show facets + facet values
-		this.show_facets();
-		// show filters on the data
-		//this.show_filters();
-		// now show the geojson data using the Leaflet Map
-		this.map.render_region_layer(data);
 	}
 	this.set_parameters = function(){
 		// this function sets the parameters used to filter a search,
