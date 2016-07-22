@@ -21,16 +21,16 @@
 	   * types of records from certain projects.
 	   */
 	  
-	  // limit searches to the 'Virtual Valdivia' project
+	  // limit searches to the 'Historic Ft. Snelling' project
 	  // we use javascript 'push' because projects_slugs is list. You can add
 	  // multiple projects in this list, allowing you to search within multiple projects
-	  oc_obj.project_slugs.push('90-virtual-valdivia');
+	  oc_obj.project_slugs.push('91-historic-fort-snelling');
 	  
 	  // limit searchs to pottery records only (so we ignore loci, trenches, etc.)
 	  // we use javascript 'push' because category_slugs is list. You can add
 	  // multiple categories to this list, allowing you to search within multiple categories
 	  // of records
-	  oc_obj.category_slugs.push('oc-gen-cat-pottery');
+	  oc_obj.category_slugs.push('oc-gen-cat-object');
 	  
 	  // make sure we get a thumbnail for a picture associated with the search result
 	  oc_obj.attribute_slugs.push('thumbnail');
@@ -52,12 +52,14 @@
 			  <input type="text" class="form-control" id="oc-keyword-search" placeholder="Keyword Search">
 			  <p class="help-block">This demonstates the Open Context API to use for
 			  a simple keyword search functions.</p>
+			  <p class="help-block">This current demo is set limit searches to search
+			  within object records of the Ft. Snelling project.</p>
 			</div>
 			<button type="button" class="btn btn-default" onclick="oc_obj.search();return false;">Search</button>
 		  </form>
 		</div>
 	  </div>
-	  <div id="oc-results">
+	  <div id="oc-results" class="container-fluid">
 	  </div>
 	</div>
 	<p style="text-align:center;">To see a demonstration of a simple javascript client for keyword
