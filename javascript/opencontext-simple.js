@@ -97,6 +97,9 @@ function OpenContextSimpleAPI() {
 		// console.log is for debugging, it stores data for inspection
 		// with a brower's javascript debugging tools
 		console.log(data);
+		
+		//render the results as HTML on the Web page.
+		this.make_results_html();
 		return false;
 	}
 	this.set_parameters = function(){
@@ -131,6 +134,7 @@ function OpenContextSimpleAPI() {
 	 * your own website.
 	 */
 	this.make_results_html = function(){
+		// this renders all the results as HTML on the webpage
 		if (this.data != null) {
 			// we have search results, so proceed to display them.
 			if (document.getElementById(this.results_dom_id)) {
