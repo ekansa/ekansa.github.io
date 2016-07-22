@@ -93,7 +93,7 @@ function OpenContextSimpleAPI() {
 	this.get_dataDone = function(data){
 		// function to display results of a request for data
 		this.data = data;
-		alert('Found: ' + this.data.totalResults);
+		//alert('Found: ' + this.data['totalResults']);
 		// console.log is for debugging, it stores data for inspection
 		// with a brower's javascript debugging tools
 		console.log(data);
@@ -107,6 +107,15 @@ function OpenContextSimpleAPI() {
 		if (this.url == null) {
 			// builds the parameters only if we don't have them
 			// already specified in a query URL
+			if (this.project_slugs.length > 0) {
+				params['proj'] = this.project_slugs.join('||');
+			}
+			if (this.category_slugs.length > 0) {
+				params['prop'] = this.category_slugs.join('||');
+			}
+			if (this.attribute_slugs.length > 0) {
+				params['attributes'] = this.attribute_slugs.join(',');
+			}
 			if (this.sort != null) {
 				params['sort'] = this.sort;  // sorting 
 			}
@@ -116,10 +125,81 @@ function OpenContextSimpleAPI() {
 		}
 		return params;
 	}
-	this.change = function(change_url){
-		// this function is executed when a user clicks on a link
-		// to add a filter or remove a filter
-		this.api_url = change_url;
-		this.get_data();
+	/*
+	 * Functions below here are for displaying results in HTML
+	 * You can edit these functions for generating HTML so results look good on
+	 * your own website.
+	 */
+	this.make_results_html = function(){
+		if (this.data != null) {
+			// we have search results, so proceed to display them.
+			if (document.getElementById(this.results_dom_id)) {
+				// found the DOM element for where search results will be added
+				// result_dom will be the HTML container for the search results
+				var result_dom = document.getElementById(this.results_dom_id);
+				var result_html = '<h3>Search Results (Total: ' + this.data['totalResults'] + ')</h3>';
+				
+				// check to make sure we actually have result records in the data from the API
+				if ('oc-api:has-results' in this.data) {
+					result_html += '<div class="row">';
+				
+					// now loop through the records from the data obtained via the API
+					for (var i = 0, length = this.data['oc-api:has-results'].length; i < length; i++) { 
+						// a record object has data about an individual Open Context record
+						// returned from the search.
+						var record = this.data['oc-api:has-results'][i];
+						var record_html = this.make_record_html(record);
+						result_html += record_html;
+					}
+					
+					result_html += '</div>';
+				}
+				else{
+					result_html += '<p>No result records found.</p>';
+				}
+				result_dom.innerHTML = result_html;
+			}
+			else{
+				// cannot find the DOM element for the search results
+				// alert with an error message.
+				var error = [
+				'Cannot find the DOM element for putting search results, ',
+				'set the "results_dom_id" attribute for this object ',
+				'to indicate the ID of the HTML DOM element where ',
+				'search results will be displayed.'
+				].join('\n');
+				alert(error);
+			}
+		}
+		return false;
+	}
+	this.make_record_html = function(record){
+		// make HTML for a search result
+		var record_html = '<div class="col-xs-3">';
+		var thumb = false;
+		if ('thumbnail' in record) {
+			if (record['thumbnail'] != false) {
+				thumb = record['thumbnail'];
+			}
+		}
+		if (thumb != false) {
+			// we have a thumbnail in the result
+			record_html += '<div class="thumbnail">';
+			record_html += '<a href="' + record.uri + '" target="_blank">';
+			record_html += '<img alt="thumbail for ' + record.label + '" '
+			record_html += 'src="' + thumb + '" class="img-responsive" />';
+			record_html += '</a>';
+			record_html += '<div class="caption">';
+			record_html += '<h3>' + record.label + '</h3>';
+			record_html += '</div>';
+			record_html += '</div>';
+		}
+		else{
+			record_html += '<a href="' + record.uri + '" target="_blank">';
+			record_html += '<h3>' + record.label + '</h3>';
+			record_html += '</a>';
+		}
+		record_html += '</div>';
+		return record_html;
 	}
 }
