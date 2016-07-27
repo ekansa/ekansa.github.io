@@ -8,7 +8,7 @@
 
 function OpenContextSimpleAPI() {
 	/* Object for runing searches + displaying results from Open Context */
-	this.default_api_url = 'http://opencontext.org/subjects-search/';
+	this.default_api_url = 'https://opencontext.org/subjects-search/';
 	this.url = null;
 	this.data = null;
 	this.keyword_dom_id = 'oc-keyword-search'; // DOM ID for the keyword search text input from user
