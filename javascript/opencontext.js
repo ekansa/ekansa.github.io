@@ -49,11 +49,11 @@ function OpenContextAPI(settings) {
 	this.start_map = function(){
 		map = L.map(this.map_dom_id);
 		this.bounds = new L.LatLngBounds();
-		var osmTiles = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		var osmTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
 		});
-		var ESRISatelliteTiles = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-			attribution: '&copy; <a href="http://services.arcgisonline.com/">ESRI.com</a> '
+		var ESRISatelliteTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+			attribution: '&copy; <a href="https://services.arcgisonline.com/">ESRI.com</a> '
 		});
 		var baseMaps = {
 			"ESRI-Satellite": ESRISatelliteTiles,
