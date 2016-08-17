@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>Open Context API Test</title>
+  </head>
+
+  <body>
+	<div id="oc-style-zone">
+	  <div id="oc-data">
+	  </div>
+	  
+	  <script src="https://opencontext.org/static/jquery/jquery-1.11.1.min.js"></script>
+	  <script src="https://opencontext.org/static/jquery/ui/jquery-ui.min.js"></script>
+	  
+	  <link rel="stylesheet" href="https://opencontext.org/static/bootstrap/3.3.4/css/bootstrap.min.css">
+	  <script src="https://opencontext.org/static/bootstrap/3.3.4/js/bootstrap.js"></script>
+	  
+	  <link rel="stylesheet" href="https://opencontext.org/static/leaflet/main-latest/leaflet.css" />
+      <script src="https://opencontext.org/static/leaflet/main-latest/leaflet.js"></script>
+	  
+	  <script src="../javascript/opencontext.js"></script>
+	  <script type="text/javascript">
+		var oc_settings = {
+		  'title': 'Ft. Snelling via the Open Context API',
+		  'root_dom_id': 'oc-data',
+		  'api_start_url': 'https://opencontext.org/subjects-search/United+States.json?prop=oc-gen-cat-object&prop=91-materials-1---91-glass-material&proj=91-historic-fort-snelling'
+		};
+		var oc_obj = new OpenContextAPI(oc_settings);
+		oc_obj.start();
+		$(window).on('hashchange', function() {
+		  oc_obj.get_data();
+		});
+	  </script>
+	</div>
+	<p style="text-align:center;">To see a demonstration of a simple javascript client for keyword
+	searches, <a href="../simple.html">click here</a>.
+	</p>
+	<p style="text-align:center;">Demonstration javascript client for interacting with the Open Context API. Feel free to
+	fork from <a href="https://github.com/ekansa/ekansa.github.io">GitHub</a>.
+	</p>
+  </body>
+</html>

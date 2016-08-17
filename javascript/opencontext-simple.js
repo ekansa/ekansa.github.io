@@ -13,7 +13,7 @@ function OpenContextSimpleAPI() {
 	this.data = null;
 	this.keyword_dom_id = 'oc-keyword-search'; // DOM ID for the keyword search text input from user
 	this.results_dom_id = 'oc-results'; // DOM ID for where to put HTML displaying search results
-	this.response = 'metadata,uri-meta';
+	this.response = 'metadata,uri-meta,facet';
 	this.project_slugs = [];
 	this.category_slugs = [];
 	this.attribute_slugs = [];
