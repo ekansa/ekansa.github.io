@@ -14,6 +14,10 @@
 
 function OpenContextFacetsRecsAPI() {
 	/* Object for runing searches + displaying results from Open Context */
+	this.api_roots = [
+		'https://opencontext.org/',
+		'http://opencontext.org/',
+	];
 	this.default_api_url = 'https://opencontext.org/subjects-search/';
 	this.url = null;
 	this.data = null; // search result data
@@ -67,8 +71,8 @@ function OpenContextFacetsRecsAPI() {
 			var url = this.url;
 		}
 		else{
-			// we don't have a specified API search url, so use the default
-			var url = this.default_api_url;
+			// we don't have a specified API search url, so checked for hashed urls
+			var url = this.get_api_url();
 		}
 		var params = this.set_parameters();
 		return $.ajax({
@@ -89,7 +93,7 @@ function OpenContextFacetsRecsAPI() {
 		// calls the Open Context API to get data with a keyword search
 		// Note: how this is a new search, so the search uses the default_api_url
 		// and the params will have search additional filters / attributes
-		var url = this.default_api_url;
+		var url = this.get_api_url();
 		var params = this.set_parameters();
 		params['q'] = query;
 		return $.ajax({
@@ -111,6 +115,10 @@ function OpenContextFacetsRecsAPI() {
 	}
 	this.get_dataDone = function(data){
 		// function to display results of a request for data
+		
+		//reset the url to be null
+		this.url = null;
+		//set the current data for the API object
 		this.data = data;
 		//alert('Found: ' + this.data['totalResults']);
 		// console.log is for debugging, it stores data for inspection
@@ -539,5 +547,33 @@ function OpenContextFacetsRecsAPI() {
 			// skip an error message for now
 			return false;
 		}
+	}
+	this.get_api_url = function(){
+		// default_api_url
+		var url = this.default_api_url;
+		if (this.url != null) {
+			// we've got a requested url
+			url = this.url;
+		}
+		else{
+			// checking for a hashed url
+			var hash_exists = window.location.hash;
+			if (hash_exists){
+				var hash = window.location.hash.substring(1);
+				var api_root_missing = true;
+				for (var i = 0, length = this.api_roots.length; i < length; i++) {
+					var api_root = this.api_roots[i];
+					if (hash.indexOf(api_root) > -1) {
+						//found the API root
+						api_root_missing = false;
+						url = hash;
+					}
+				}
+				if (api_root_missing){
+					url = this.api_roots[0] + hash;
+				}
+			}	
+		}
+		return url;
 	}
 }
