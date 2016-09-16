@@ -1,12 +1,10 @@
 <html>
   <head>
-    <title>Open Context API Test</title>
+    <title>Open Context API Test for the Bade Museum</title>
   </head>
 
   <body>
 	<div id="oc-style-zone">
-	  <div id="oc-data">
-	  </div>
 	  
 	  <script src="https://opencontext.org/static/jquery/jquery-1.11.1.min.js"></script>
 	  <script src="https://opencontext.org/static/jquery/ui/jquery-ui.min.js"></script>
@@ -15,20 +13,34 @@
 	  <script src="https://opencontext.org/static/bootstrap/3.3.4/js/bootstrap.js"></script>
 	  
 	  <link rel="stylesheet" href="https://opencontext.org/static/leaflet/main-latest/leaflet.css" />
-      <script src="https://opencontext.org/static/leaflet/main-latest/leaflet.js"></script>
+    <script src="https://opencontext.org/static/leaflet/main-latest/leaflet.js"></script>
 	  
-	  <script src="../javascript/opencontext.js"></script>
+	  <script src="../javascript/opencontext-facets-records.js"></script>
+		
+		<div id="oc-data">
+			
+		</div>
+		
+		
 	  <script type="text/javascript">
-		var oc_settings = {
-		  'title': 'DINAA via the Open Context API',
-		  'root_dom_id': 'oc-data',
-		  'api_start_url': 'https://opencontext.org/subjects-search/United+States.json?proj=52-digital-index-of-north-american-archaeology-dinaa'
-		};
-		var oc_obj = new OpenContextAPI(oc_settings);
-		oc_obj.start();
+		<!--	
+		var oc_obj = new OpenContextFacetsRecsAPI();
+		oc_obj.project_slugs.push('14-bade-museum');
+		oc_obj.category_slugs.push('oc-gen-cat-object');
+	  // make sure we get a thumbnail for a picture associated with the search result
+	  oc_obj.attribute_slugs.push('thumbnail');
+		oc_obj.start_faceturl = 'https://opencontext.org/subjects-search/Ecuador.json?prop=oc-gen-cat-object&proj=14-bade-museum';
+		oc_obj.title = 'Search the Badè Museum of Biblical Archaeology Catalog';
+		oc_obj.setup_page();
+		oc_obj.get_start_facets();
+		oc_obj.get_data();
+		
+		// add a hash change on the url to reflect current state
 		$(window).on('hashchange', function() {
 		  oc_obj.get_data();
 		});
+		
+		-->
 	  </script>
 	</div>
 	<p style="text-align:center;">To see a demonstration of a simple javascript client for keyword
