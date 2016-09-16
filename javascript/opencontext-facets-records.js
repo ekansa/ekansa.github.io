@@ -515,7 +515,7 @@ function OpenContextFacetsRecsAPI() {
 								'id="'+ this.keyword_dom_id +'" ',
 								'placeholder="Keyword Search" >',
 								'<p class="help-block">Type a simple keyword search.</p>',
-							'</div>'
+							'</div>',
 							'<button type="button" class="btn btn-default" ',
 							  'onclick="' + this.obj_name + '.search();return false;">Search</button>',
 						'</div>',	
