@@ -106,6 +106,9 @@ function OpenContextFacetsRecsAPI() {
 				Accept : "application/json; charset=utf-8"
 			},
 			context: this,
+			complete: function(){
+				alert(this.url);
+			},
 			success: this.get_dataDone, //do this when we get data w/o problems
 			error: this.get_dataError //error message display
 		});
