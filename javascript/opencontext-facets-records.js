@@ -590,7 +590,7 @@ function OpenContextFacetsRecsAPI() {
 	this.search_button_enable_disable = function(disabled){
 		if (document.getElementById(this.search_button_cont_dom_id)) {
 			// show the loading script
-			var act_dom = document.getElementById(this.search_button_cont_dom_id
+			var act_dom = document.getElementById(this.search_button_cont_dom_id);
 			var html = this.make_search_button_html(disabled);
 			act_dom.innerHTML = html;
 		}
