@@ -22,6 +22,7 @@ function OpenContextFacetsRecsAPI() {
 	this.loading_icon_url = 'https://opencontext.org/static/oc/images/ui/waiting.gif';
 	this.loading_icon_style = 'margin-top: 10px; height: 20px;';
 	this.initial_request = true;  // we're doing an initial request
+	this.skip_url_parmas = false; // don't add url params, because we're passing a url already
 	this.url = null;
 	this.data = null; // search result data
 	this.facets = null; // facet information returned from Open Context
@@ -41,6 +42,8 @@ function OpenContextFacetsRecsAPI() {
 	this.record_start = 0;  // the start number for the results
 	this.record_rows = 24;  // the number of rows returned in a search result
     this.start_faceturl = 'https://opencontext.org/subjects-search/?proj=14-bade-museum';
+	this.show_all_facets = true; //show all facts, not only those in the show_only_facets list
+	this.show_checkbox_facets = false; //do checkbox facet searches
     this.show_only_facets = []; //list of the facets we want to display on the page
     this.previous_link = null;
     this.next_link = null;
@@ -66,6 +69,14 @@ function OpenContextFacetsRecsAPI() {
 			alert(error);
 			return false;
 		}
+	}
+	this.change = function(url){
+		//change state, but requesting data for another URL
+		this.skip_url_parmas = true;
+		//make HTTPs of the url
+		this.url = url.replace(this.api_roots[1], this.api_roots[0]);
+		//now get the data
+		this.get_data();
 	}
 	this.get_data = function() {
 		// calls the Open Context API to get data, not yet filtered with a keyword search
@@ -138,12 +149,16 @@ function OpenContextFacetsRecsAPI() {
 		this.initial_request = false;
 		//reset the url to be null
 		this.url = null;
+		//reset so we don't default to skipping query parameters for the next request
+		this.skip_url_parmas = false;
 		//set the current data for the API object
 		this.data = data;
 		//alert('Found: ' + this.data['totalResults']);
 		// console.log is for debugging, it stores data for inspection
 		// with a brower's javascript debugging tools
 		console.log(data);
+		//render the facets as HTML on the Web page
+		this.show_facets();
 		//render the results as HTML on the Web page.
 		this.make_results_html();
 		//make search button active
@@ -391,23 +406,37 @@ function OpenContextFacetsRecsAPI() {
 				// show some search facets
 				for (var i = 0, length = this.facets.length; i < length; i++) {
 					var facet = this.facets[i];
-                    for (var j = 0, sf_length = this.show_only_facets.length; j < sf_length; j++) {
-                        var show_facet = this.show_only_facets[j];
-                        if(facet.label == show_facet){
-					       var facet_html = '<div class="panel panel-default">'
-                           facet_html += '<div class="panel-body">';
-					       facet_html += '<h4>' + facet.label + '</h4>'
-					       //use another function to make facet search values
-					       facet_html += this.make_facet_values_html(facet);
-					       facet_html += '</div>';
-					       facet_html += '</div>';
-					       html += facet_html;
-                        }
-                    }
+					if(this.show_all_facets){
+						var facet_html = this.this.make_facet_panel_html(facet);
+						html += facet_html;
+					}
+					else{
+						for (var j = 0, sf_length = this.show_only_facets.length; j < sf_length; j++) {
+							var show_facet = this.show_only_facets[j];
+							if(facet.label == show_facet ){
+							   var facet_html = this.this.make_facet_panel_html(facet);
+							   html += facet_html;
+							}
+						}
+					}
 				}
 			}
 			act_dom.innerHTML = html;
 		}
+	}
+	this.make_facet_panel_html = function(facet){
+		var html = [
+			'<div class="panel panel-default">',
+				'<div class="panel-heading">',
+					'<h3 class="panel-title">',
+					facet.label,
+					'</h3>',
+				'</div>',
+				'<div class="panel-body">',
+				this.make_facet_values_html(facet),
+				'</div>',
+		    '</div>',
+		].join('\n');
 	}
 	this.make_facet_values_html = function(facet){
 		var value_list = [];
@@ -420,14 +449,33 @@ function OpenContextFacetsRecsAPI() {
 		}
 		for (var i = 0, length = value_list.length; i < length; i++) {
 			var val_item = value_list[i];
-			var val_html = this.make_facet_val_link(facet, val_item); //+ ' (' + val_item.count + ')';
+			if(this.show_checkbox_facets){
+				var val_html = this.make_facet_val_link(facet, val_item); //+ ' (' + val_item.count + ')';
+			}
+			else{
+				var val_html = this.make_facet_val_link(facet, val_item);			
+			}
 			html_list.push(val_html);
 		}
-		var html = html_list.join(' ');
+		if(this.show_checkbox_facets){
+			var html = html_list.join(' ');	
+		}
+		else{
+			var html = html_list.join(', ');
+		}
+		
 		return html;
 	}
-    
-	this.make_facet_val_link = function(facet, val_item){
+    this.make_facet_val_link = function(facet, val_item){
+		var html = [
+			'<a href="javascript:'+ this.obj_name +'.change(\''+ val_item.id + '\');return false;" ',
+			'title="Filter collection by this value" >',
+			val_item.label,
+			'</a>',
+		].join('\n');
+		return html;
+	}
+	this.make_facet_val_check_link = function(facet, val_item){
 		var html = '<div class = "checkbox">';
         var cb_class = facet.id.replace('#','');
         html += '<label>';
@@ -534,10 +582,10 @@ function OpenContextFacetsRecsAPI() {
 			var html = [
 			'<div class="container-fluid">',
 				'<div class="row">',    
-						'<div class="col-sm-8">',
+						'<div class="col-sm-6">',
 						'<h3>' + this.title + '</h3>',
 						'</div>',
-						'<div class="col-sm-4">',
+						'<div class="col-sm-6">',
 							'<div class="form-group">',
 								'<label for="oc-keyword-search">Search Open Context</label>',
 								'<input type="search" ',
@@ -619,24 +667,27 @@ function OpenContextFacetsRecsAPI() {
 	this.make_request_url = function(base_url, params){
 		// makes a request URL from a base_url and parameters
 		var url = base_url;
-		if (base_url.indexOf('?') > -1) {
-			var q_sep = '&';
-		}
-		else{
-			var q_sep = '?';
-		}
-		for (var prop in params) {
-			if (params.hasOwnProperty(prop)) {
-				var add_term = encodeURIComponent(prop);
-				add_term += '=' + encodeURIComponent(params[prop]);
-				if(prop == 'q'){
-					// replace, don't add a new keyword search parameter
-					url = this.replaceURLparameter(url, prop, params[prop]);
-				}
-				else{
-					if (url.indexOf(add_term) < 0) {
-						url += q_sep + add_term;
-						q_sep = '&';
+		if(!this.skip_url_parmas){
+			// only do this if we are NOT skipping url parameters
+			if (base_url.indexOf('?') > -1) {
+				var q_sep = '&';
+			}
+			else{
+				var q_sep = '?';
+			}
+			for (var prop in params) {
+				if (params.hasOwnProperty(prop)) {
+					var add_term = encodeURIComponent(prop);
+					add_term += '=' + encodeURIComponent(params[prop]);
+					if(prop == 'q'){
+						// replace, don't add a new keyword search parameter
+						url = this.replaceURLparameter(url, prop, params[prop]);
+					}
+					else{
+						if (url.indexOf(add_term) < 0) {
+							url += q_sep + add_term;
+							q_sep = '&';
+						}
 					}
 				}
 			}
