@@ -78,7 +78,10 @@ function OpenContextFacetsRecsAPI() {
 		var params = this.set_parameters();
 		if (!this.initial_request){
 			var r_url = this.make_request_url(url, params);
-			this.change_frag_id(r_url);
+			if (url.indexOf(r_url) < 0) {
+				// the r_url is different from the url, so update the hash
+				this.change_frag_id(r_url);
+			}
 		}
 		return $.ajax({
 			type: "GET",
@@ -103,7 +106,10 @@ function OpenContextFacetsRecsAPI() {
 		params['q'] = query;
 		if (!this.initial_request){
 			var r_url = this.make_request_url(url, params);
-			this.change_frag_id(r_url);
+			if (url.indexOf(r_url) < 0) {
+				// the r_url is different from the url, so update the hash
+				this.change_frag_id(r_url);
+			}
 		}
 		return $.ajax({
 			type: "GET",
