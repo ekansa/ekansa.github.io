@@ -75,6 +75,8 @@ function OpenContextFacetsRecsAPI() {
 		this.skip_url_parmas = true;
 		//make HTTPs of the url
 		this.url = url.replace(this.api_roots[1], this.api_roots[0]);
+		//update the current page's fragment identifier
+		this.change_frag_id(this.url);
 		//now get the data
 		this.get_data();
 		return false;
@@ -93,7 +95,7 @@ function OpenContextFacetsRecsAPI() {
 		var params = this.set_parameters();
 		var r_url = this.make_request_url(url, params);
 		if (!this.initial_request){
-			if (url.indexOf(r_url) < 0) {
+			if (url.indexOf(r_url) < 0 && url != r_url) {
 				// the r_url is different from the url, so update the hash
 				this.change_frag_id(r_url);
 			}
@@ -121,7 +123,7 @@ function OpenContextFacetsRecsAPI() {
 		params['q'] = query;
 		var r_url = this.make_request_url(url, params);
 		if (!this.initial_request){
-			if (url.indexOf(r_url) < 0) {
+			if (url.indexOf(r_url) < 0 && url != r_url) {
 				// the r_url is different from the url, so update the hash
 				this.change_frag_id(r_url);
 			}
