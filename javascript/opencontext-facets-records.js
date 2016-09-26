@@ -443,6 +443,7 @@ function OpenContextFacetsRecsAPI() {
 				'</div>',
 		    '</div>',
 		].join('\n');
+		return html;
 	}
 	this.make_facet_values_html = function(facet){
 		var value_list = [];
