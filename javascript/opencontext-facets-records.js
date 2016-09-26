@@ -79,8 +79,8 @@ function OpenContextFacetsRecsAPI() {
 			var url = this.get_api_url();
 		}
 		var params = this.set_parameters();
+		var r_url = this.make_request_url(url, params);
 		if (!this.initial_request){
-			var r_url = this.make_request_url(url, params);
 			if (url.indexOf(r_url) < 0) {
 				// the r_url is different from the url, so update the hash
 				this.change_frag_id(r_url);
@@ -89,8 +89,7 @@ function OpenContextFacetsRecsAPI() {
 		this.loading_html();
 		return $.ajax({
 			type: "GET",
-			url: url,
-			data: params,
+			url: r_url,
 			dataType: "json",
 			headers: {
 				//added to get JSON data (content negotiation)
@@ -108,8 +107,8 @@ function OpenContextFacetsRecsAPI() {
 		var url = this.get_api_url();
 		var params = this.set_parameters();
 		params['q'] = query;
+		var r_url = this.make_request_url(url, params);
 		if (!this.initial_request){
-			var r_url = this.make_request_url(url, params);
 			if (url.indexOf(r_url) < 0) {
 				// the r_url is different from the url, so update the hash
 				this.change_frag_id(r_url);
@@ -118,9 +117,8 @@ function OpenContextFacetsRecsAPI() {
 		this.loading_html();
 		return $.ajax({
 			type: "GET",
-			url: url,
+			url: r_url,
 			dataType: "json",
-			data: params,
 			headers: {
 				//added to get JSON data (content negotiation)
 				Accept : "application/json; charset=utf-8"
