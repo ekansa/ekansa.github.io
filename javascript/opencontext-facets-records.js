@@ -407,14 +407,14 @@ function OpenContextFacetsRecsAPI() {
 				for (var i = 0, length = this.facets.length; i < length; i++) {
 					var facet = this.facets[i];
 					if(this.show_all_facets){
-						var facet_html = this.this.make_facet_panel_html(facet);
+						var facet_html = this.make_facet_panel_html(facet);
 						html += facet_html;
 					}
 					else{
 						for (var j = 0, sf_length = this.show_only_facets.length; j < sf_length; j++) {
 							var show_facet = this.show_only_facets[j];
 							if(facet.label == show_facet ){
-							   var facet_html = this.this.make_facet_panel_html(facet);
+							   var facet_html = this.make_facet_panel_html(facet);
 							   html += facet_html;
 							}
 						}
