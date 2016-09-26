@@ -19,6 +19,8 @@ function OpenContextFacetsRecsAPI() {
 		'http://opencontext.org/',
 	];
 	this.default_api_url = 'https://opencontext.org/subjects-search/';
+	this.loading_icon_url = 'https://opencontext.org/static/oc/images/ui/waiting.gif';
+	this.loading_icon_style = 'margin-top: 10px; height: 20px;';
 	this.initial_request = true;  // we're doing an initial request
 	this.url = null;
 	this.data = null; // search result data
@@ -29,6 +31,7 @@ function OpenContextFacetsRecsAPI() {
 	this.keyword_dom_id = 'oc-keyword-search'; // DOM ID for the keyword search text input from user
 	this.results_dom_id = 'oc-results'; // DOM ID for where to put HTML displaying search results
 	this.facets_dom_id = 'oc-facets'; // DOM ID for where to put HTML displaying search facets
+	this.search_button_cont_dom_id = 'oc-search'; // DOM ID for HTML of search button CONTAINER
 	this.response = 'metadata,uri-meta,facet';
 	this.project_slugs = [];
 	this.category_slugs = [];
@@ -83,6 +86,7 @@ function OpenContextFacetsRecsAPI() {
 				this.change_frag_id(r_url);
 			}
 		}
+		this.loading_html();
 		return $.ajax({
 			type: "GET",
 			url: url,
@@ -111,6 +115,7 @@ function OpenContextFacetsRecsAPI() {
 				this.change_frag_id(r_url);
 			}
 		}
+		this.loading_html();
 		return $.ajax({
 			type: "GET",
 			url: url,
@@ -141,9 +146,10 @@ function OpenContextFacetsRecsAPI() {
 		// console.log is for debugging, it stores data for inspection
 		// with a brower's javascript debugging tools
 		console.log(data);
-		
 		//render the results as HTML on the Web page.
 		this.make_results_html();
+		//make search button active
+		this.search_button_enable_disable(false);
 		return false;
 	}
 	this.set_parameters = function(){
@@ -541,8 +547,9 @@ function OpenContextFacetsRecsAPI() {
 								'placeholder="Keyword Search" >',
 								'<p class="help-block">Type a simple keyword search.</p>',
 							'</div>',
-							'<button type="button" class="btn btn-default" ',
-							  'onclick="' + this.obj_name + '.search();return false;">Search</button>',
+							'<div id="' + this.search_button_cont_dom_id + '">',
+							this.make_search_button_html(false),
+							'</div>',
 						'</div>',	
 					'</div>',
 				'<div class="row">',    
@@ -565,7 +572,48 @@ function OpenContextFacetsRecsAPI() {
 			return false;
 		}
 	}
-	
+	this.make_search_button_html = function(disabled){
+		if(disabled){
+			var html = [
+				'<button type="button" class="btn btn-default" ',
+				'disabled="disabled" >Search</button>',
+			].join('\n');
+		}
+		else{
+			var html = [
+				'<button type="button" class="btn btn-default" ',
+				'onclick="' + this.obj_name + '.search();return false;">Search</button>',
+			].join('\n');
+		}
+		return html;
+	}
+	this.search_button_enable_disable = function(disabled){
+		if (document.getElementById(this.search_button_cont_dom_id)) {
+			// show the loading script
+			var act_dom = document.getElementById(this.search_button_cont_dom_id
+			var html = this.make_search_button_html(disabled);
+			act_dom.innerHTML = html;
+		}
+	}
+	this.loading_html = function(){
+		// changes HTML of DOM to show loading gifs, disable buttons, etc.
+		this.search_button_enable_disable(true);
+		this.loading_spinner_html(this.results_dom_id, 'Requesting records...');
+		this.loading_spinner_html(this.facets_dom_id, 'Requesting classifications...');
+	}
+	this.loading_spinner_html = function(dom_id, message){
+		if (document.getElementById(dom_id)) {
+			// show the loading script
+			var act_dom = document.getElementById(dom_id);
+			var html = [
+				'<img style="' + this.loading_icon_style + '" ',
+				'src="' + this.loading_icon_url + '" ',
+				'alt="Loading icon..." />',
+				message,
+			].join('\n');
+			act_dom.innerHTML = html;
+		}
+	}
 	this.make_request_url = function(base_url, params){
 		// makes a request URL from a base_url and parameters
 		var url = base_url;
