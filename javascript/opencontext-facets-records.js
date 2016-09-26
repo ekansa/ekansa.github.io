@@ -576,7 +576,12 @@ function OpenContextFacetsRecsAPI() {
 	}
 	this.change_frag_id = function(new_frag){
 		// change to https
-		new_frag = new_frag.replace(this.api_roots[1], this.api_roots[0]);
+		new_frag = new_frag.replace(this.api_roots[0], '');
+		new_frag = new_frag.replace(this.api_roots[1], '');
+		var hash_exists = window.location.hash;
+		if (hash_exists){
+			window.location.hash = '';
+		}		
 		window.location.hash = new_frag;
 	}
 	this.get_api_url = function(){
