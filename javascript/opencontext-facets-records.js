@@ -106,10 +106,6 @@ function OpenContextFacetsRecsAPI() {
 				Accept : "application/json; charset=utf-8"
 			},
 			context: this,
-			complete: function(url){
-				console.log(url);
-				console.log(this);
-			},
 			success: this.get_dataDone, //do this when we get data w/o problems
 			error: this.get_dataError //error message display
 		});
@@ -122,6 +118,8 @@ function OpenContextFacetsRecsAPI() {
 		
 		//reset the url to be null
 		this.url = null;
+		//use the id attribute to add to the fragment identifier (enables back button)
+		this.change_frag_id(data.id);
 		//set the current data for the API object
 		this.data = data;
 		//alert('Found: ' + this.data['totalResults']);
@@ -551,6 +549,12 @@ function OpenContextFacetsRecsAPI() {
 			// skip an error message for now
 			return false;
 		}
+	}
+	
+	this.change_frag_id = function(new_frag){
+		// change to https
+		new_frag = new_frag.replace(this.api_root[1], this.api_root[0]);
+		window.location.hash = new_frag;
 	}
 	this.get_api_url = function(){
 		// default_api_url
