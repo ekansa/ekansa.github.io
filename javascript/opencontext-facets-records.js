@@ -19,6 +19,7 @@ function OpenContextFacetsRecsAPI() {
 		'http://opencontext.org/',
 	];
 	this.default_api_url = 'https://opencontext.org/subjects-search/';
+	this.initial_request = true;  // we're doing an initial request
 	this.url = null;
 	this.data = null; // search result data
 	this.facets = null; // facet information returned from Open Context
@@ -75,8 +76,10 @@ function OpenContextFacetsRecsAPI() {
 			var url = this.get_api_url();
 		}
 		var params = this.set_parameters();
-		var r_url = this.make_request_url(url, params);
-		this.change_frag_id(r_url);
+		if (!this.initial_request){
+			var r_url = this.make_request_url(url, params);
+			this.change_frag_id(r_url);
+		}
 		return $.ajax({
 			type: "GET",
 			url: url,
@@ -98,8 +101,10 @@ function OpenContextFacetsRecsAPI() {
 		var url = this.get_api_url();
 		var params = this.set_parameters();
 		params['q'] = query;
-		var r_url = this.make_request_url(url, params);
-		this.change_frag_id(r_url);
+		if (!this.initial_request){
+			var r_url = this.make_request_url(url, params);
+			this.change_frag_id(r_url);
+		}
 		return $.ajax({
 			type: "GET",
 			url: url,
@@ -120,6 +125,8 @@ function OpenContextFacetsRecsAPI() {
 	this.get_dataDone = function(data){
 		// function to display results of a request for data
 		
+		// we're not doing intial requests so can add frag identifiers now
+		this.initial_request = false;
 		//reset the url to be null
 		this.url = null;
 		//set the current data for the API object
