@@ -77,6 +77,7 @@ function OpenContextFacetsRecsAPI() {
 		this.url = url.replace(this.api_roots[1], this.api_roots[0]);
 		//now get the data
 		this.get_data();
+		return false;
 	}
 	this.get_data = function() {
 		// calls the Open Context API to get data, not yet filtered with a keyword search
@@ -475,10 +476,8 @@ function OpenContextFacetsRecsAPI() {
 	}
     this.make_facet_val_link = function(facet, val_item){
 		var html = [
-			'<a href="javascript:'+ this.obj_name +'.change(\''+ val_item.id + '\');return false;" ',
-			'title="Filter collection by this value" >',
-			val_item.label,
-			'</a>',
+			'<a href="javascript:'+ this.obj_name +'.change(\''+ val_item.id + '\');" ',
+			'title="Filter collection by this value" >'+ val_item.label + '</a>'
 		].join('\n');
 		return html;
 	}
