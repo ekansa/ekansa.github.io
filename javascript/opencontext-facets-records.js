@@ -606,10 +606,12 @@ function OpenContextFacetsRecsAPI() {
 			// show the loading script
 			var act_dom = document.getElementById(dom_id);
 			var html = [
+				'<div style="min-height: 200px;" >',
 				'<img style="' + this.loading_icon_style + '" ',
 				'src="' + this.loading_icon_url + '" ',
 				'alt="Loading icon..." />',
 				message,
+				'</div>',
 			].join('\n');
 			act_dom.innerHTML = html;
 		}
