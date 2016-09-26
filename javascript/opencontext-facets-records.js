@@ -402,10 +402,16 @@ function OpenContextFacetsRecsAPI() {
 		if (document.getElementById(this.facets_dom_id)) {
 			var act_dom = document.getElementById(this.facets_dom_id);
 			var html = '';
-			if(this.facets != null){
+			var facets = this.facets;
+			if(facets == null && this.data != null){
+				if('oc-api:has-facets' in this.data){
+					facets = this.data['oc-api:has-facets'];
+				}
+			}
+			if(facets != null){
 				// show some search facets
-				for (var i = 0, length = this.facets.length; i < length; i++) {
-					var facet = this.facets[i];
+				for (var i = 0, length = facets.length; i < length; i++) {
+					var facet = facets[i];
 					if(this.show_all_facets){
 						var facet_html = this.make_facet_panel_html(facet);
 						html += facet_html;
