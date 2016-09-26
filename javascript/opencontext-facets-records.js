@@ -276,7 +276,9 @@ function OpenContextFacetsRecsAPI() {
 			record_html += '</a>';
 			record_html += '<div class="caption">';
 			record_html += '<h5 class="text-center">Item:</hg>';
-			record_html += '<h4 class="text-center">' + record.label + '</h4>';
+			record_html += '<h4 class="text-center small">';
+			record_html += '<a href="' + record.uri + '" target="_blank">';
+			record_html += record.label + '</a></h4>';
 			record_html += '</div>';
 			record_html += '</div>';
 		}
