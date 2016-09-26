@@ -579,9 +579,15 @@ function OpenContextFacetsRecsAPI() {
 			if (params.hasOwnProperty(prop)) {
 				var add_term = encodeURIComponent(prop);
 				add_term += '=' + encodeURIComponent(params[prop]);
-				if (url.indexOf(add_term) < 0) {
-					url += q_sep + add_term;
-					q_sep = '&';
+				if(prop == 'q'){
+					// replace, don't add a new keyword search parameter
+					url = this.replaceURLparameter(url, prop, params[prop]);
+				}
+				else{
+					if (url.indexOf(add_term) < 0) {
+						url += q_sep + add_term;
+						q_sep = '&';
+					}
 				}
 			}
 		}
@@ -623,6 +629,30 @@ function OpenContextFacetsRecsAPI() {
 				}
 			}	
 		}
+		return url;
+	}
+	this.replaceURLparameter = function(url, parameter, replace) {
+		// replaces a URL parameter for search
+		var urlparts= url.split('?');   
+		if (urlparts.length>=2) {
+	
+			var prefix= encodeURIComponent(parameter)+'=';
+			var pars= urlparts[1].split(/[&;]/g);
+	
+			//reverse iteration as may be destructive
+			for (var i= pars.length; i-- > 0;) {    
+				//idiom for string.startsWith
+				if (pars[i].lastIndexOf(prefix, 0) !== -1) {  
+					pars.splice(i, 1);
+				}
+			}
+			url= urlparts[0]+'?'+pars.join('&');
+		url += '&';
+		}
+		else {
+		url += '?';
+		}
+		url += encodeURIComponent(parameter) + '=' + encodeURIComponent(replace);
 		return url;
 	}
 }
