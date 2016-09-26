@@ -75,6 +75,8 @@ function OpenContextFacetsRecsAPI() {
 			var url = this.get_api_url();
 		}
 		var params = this.set_parameters();
+		var r_url = this.make_request_url(url, params);
+		this.change_frag_id(r_url);
 		return $.ajax({
 			type: "GET",
 			url: url,
@@ -96,6 +98,8 @@ function OpenContextFacetsRecsAPI() {
 		var url = this.get_api_url();
 		var params = this.set_parameters();
 		params['q'] = query;
+		var r_url = this.make_request_url(url, params);
+		this.change_frag_id(r_url);
 		return $.ajax({
 			type: "GET",
 			url: url,
@@ -118,8 +122,6 @@ function OpenContextFacetsRecsAPI() {
 		
 		//reset the url to be null
 		this.url = null;
-		//use the id attribute to add to the fragment identifier (enables back button)
-		this.change_frag_id(data.id);
 		//set the current data for the API object
 		this.data = data;
 		//alert('Found: ' + this.data['totalResults']);
@@ -551,6 +553,27 @@ function OpenContextFacetsRecsAPI() {
 		}
 	}
 	
+	this.make_request_url = function(base_url, params){
+		// makes a request URL from a base_url and parameters
+		var url = base_url;
+		if (base_url.indexOf('?') > -1) {
+			var q_sep = '&';
+		}
+		else{
+			var q_sep = '?';
+		}
+		for (var prop in params) {
+			if (params.hasOwnProperty(prop)) {
+				var add_term = encodeURIComponent(prop);
+				add_term += '=' + encodeURIComponent(params[prop]);
+				if (url.indexOf(add_term) < 0) {
+					url += q_sep + add_term;
+					q_sep = '&';
+				}
+			}
+		}
+		return url;
+	}
 	this.change_frag_id = function(new_frag){
 		// change to https
 		new_frag = new_frag.replace(this.api_roots[1], this.api_roots[0]);
