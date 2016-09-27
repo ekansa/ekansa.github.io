@@ -568,7 +568,11 @@ function OpenContextFacetsRecsAPI() {
 		}
 	}
 	this.make_filter_html = function(filter){
+		// makes hte HTML for a filter, including a link to remove the filter
 		var html = '<li>';
+		if('oc-api:filter' in filter){
+			html +=  filter['oc-api:filter'] + ': '
+		}
 		html += '<a title="Click to remove this filter" ';
 		html += 'href="javascript:'+ this.obj_name +'.change(\'' + filter['oc-api:remove'] + '\')">';
 		html += filter.label;
