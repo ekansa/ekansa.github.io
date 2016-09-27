@@ -431,9 +431,8 @@ function OpenContextFacetsRecsAPI() {
 							}
 						}
 					}
-					if(this.ignore_facets_ids > 0){
+					if(this.ignore_facets_ids.length > 0){
 						// we are defaulted to show
-						console.log(this.ignore_facets_ids);
 						for (var y = 0, ig_length = this.ignore_facets_ids.length; y < ig_length; y++) {
 							var ignore_facet_id = this.ignore_facets_ids[y];
 							if (facet.id.indexOf(ignore_facet_id) > -1 || facet.id == ignore_facet_id) {
