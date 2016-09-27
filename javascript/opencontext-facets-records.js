@@ -572,6 +572,7 @@ function OpenContextFacetsRecsAPI() {
 		html += '<a title="Click to remove this filter" ';
 		html += 'href="javascript:'+ this.obj_name +'.change(\'' + filter['oc-api:remove'] + '\')">';
 		html += filter.label;
+		html += '</a>';
 		html += '</li>';
 		return html;
 	}
@@ -672,8 +673,7 @@ function OpenContextFacetsRecsAPI() {
 					'</div>',
 				'</div>',
 				'<div class="row">',
-				    '<div class="col-xs-6>',
-					    '<!--',
+				    '<div class="col-xs-6">',
 					    '<div class="container-fluid">',
 							'<div class="row">',
 								'<div class="col-xs-5">',
@@ -691,7 +691,6 @@ function OpenContextFacetsRecsAPI() {
 								'</div>',
 							'</div>',
 						'</div>',
-						'-->',
 					'</div>',
 					'<div class="col-xs-6" id="'+ this.filters_dom_id +'">',
 					'</div>',
