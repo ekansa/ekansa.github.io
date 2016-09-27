@@ -689,7 +689,7 @@ function OpenContextFacetsRecsAPI() {
 									this.make_search_button_html(false),
 								'</div>',
 							'</div>',
-							'</div>',
+						'</div>',
 						'</div>',
 					'</div>',
 					'<div class="col-xs-6" id="'+ this.filters_dom_id +'">',
