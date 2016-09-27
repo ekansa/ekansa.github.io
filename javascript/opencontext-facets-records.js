@@ -47,8 +47,8 @@ function OpenContextFacetsRecsAPI() {
 	
 	]; //list of the facets we want to display on the page
 	this.ignore_facets_ids = [
-		'#facet-prop-oc-gen-subjects',
-		'#related-media'
+		'facet-prop-oc-gen-subjects',
+		'related-media'
 	]; //list of the facet (ids) we do NOT want to display
     this.previous_link = null;
     this.next_link = null;
@@ -433,9 +433,10 @@ function OpenContextFacetsRecsAPI() {
 					}
 					if(this.ignore_facets_ids > 0){
 						// we are defaulted to show
+						console.log(this.ignore_facets_ids);
 						for (var y = 0, ig_length = this.ignore_facets_ids.length; y < ig_length; y++) {
 							var ignore_facet_id = this.ignore_facets_ids[y];
-							if(facet.id == ignore_facet_id){
+							if (facet.id.indexOf(ignore_facet_id) > -1 || facet.id == ignore_facet_id) {
 								//id matches an ignore id, do not show
 							   show_facet = false;
 							}
