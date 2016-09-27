@@ -615,7 +615,7 @@ function OpenContextFacetsRecsAPI() {
 						    '<label for="oc-keyword-search">Search Open Context</label>',
 						    '<form class="form-inline">',
 								'<div class="form-group">',
-								    '<div class="input-group">'
+								    '<div class="input-group">',
 									'<input type="search" ',
 									'class="form-control" ',
 									'onchange="' + this.obj_name + '.search();return false;" ',
