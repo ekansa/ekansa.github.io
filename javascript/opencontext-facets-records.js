@@ -433,8 +433,8 @@ function OpenContextFacetsRecsAPI() {
 					}
 					if(this.ignore_facets_ids > 0){
 						// we are defaulted to show
-						for (var j = 0, sf_length = this.ignore_facets_ids.length; j < sf_length; j++) {
-							var ignore_facet_id = this.ignore_facets_ids[j];
+						for (var y = 0, ig_length = this.ignore_facets_ids.length; y < ig_length; y++) {
+							var ignore_facet_id = this.ignore_facets_ids[y];
 							if(facet.id == ignore_facet_id){
 								//id matches an ignore id, do not show
 							   show_facet = false;
