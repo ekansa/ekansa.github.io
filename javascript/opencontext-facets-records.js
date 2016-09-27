@@ -648,7 +648,7 @@ function OpenContextFacetsRecsAPI() {
 						'<div class="col-sm-6">',
 						'<h3>' + this.title + '</h3>',
 						'</div>',
-						'<div class="col-sm-6">',
+						'<div class="col-sm-6" id="'+ this.filters_dom_id +'">',
 							
 						'</div>',	
 					'</div>',
@@ -675,7 +675,7 @@ function OpenContextFacetsRecsAPI() {
 					'</div>',
 					'<div class="col-sm-6">',
 						'<div class="row">',
-							'<div class="col-xs-12" id="'+ this.filters_dom_id +'">',
+							'<div class="col-xs-12">',
 							'</div>',
 						'</div>',
 						'<div id="'+ this.results_dom_id +'">',
