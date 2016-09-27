@@ -32,6 +32,7 @@ function OpenContextFacetsRecsAPI() {
 	this.keyword_dom_id = 'oc-keyword-search'; // DOM ID for the keyword search text input from user
 	this.results_dom_id = 'oc-results'; // DOM ID for where to put HTML displaying search results
 	this.facets_dom_id = 'oc-facets'; // DOM ID for where to put HTML displaying search facets
+	this.filters_dom_id = 'oc-filters'; // DOM ID for where HTML for active filters are displayed
 	this.search_button_cont_dom_id = 'oc-search'; // DOM ID for HTML of search button CONTAINER
 	this.response = 'metadata,uri-meta,facet';
 	this.project_slugs = [];
@@ -165,6 +166,8 @@ function OpenContextFacetsRecsAPI() {
 		// console.log is for debugging, it stores data for inspection
 		// with a brower's javascript debugging tools
 		console.log(data);
+		//render the filters as HTML on the Web page
+		this.show_filters();
 		//render the facets as HTML on the Web page
 		this.show_facets();
 		//render the results as HTML on the Web page.
@@ -515,7 +518,41 @@ function OpenContextFacetsRecsAPI() {
         html += '</div>';
 		return html;
 	}
-    
+    this.show_filters = function(){
+		// function to display filers as needed
+		if (document.getElementById(this.filters_dom_id)) {
+			var act_dom = document.getElementById(this.filters_dom_id);
+			// we've got a dom place to add filters too
+			var data = this.data;
+			if ('oc-api:active-filters' in data) {
+				// the data has filters
+				if(data['oc-api:active-filters'].length > 0){
+					var f_html = '';
+					for (var i = 0, length = data['oc-api:active-filters'].length; i < length; i++) {
+						var filter = data['oc-api:active-filters'][i];
+						f_html += this.make_filter_html(filter);
+					}
+					var html = [
+					'<div class="well small">',
+						'<h4>Filters on the data</h4>',
+						'<ul>',
+						f_html,
+						'</ul>',
+					'</div>',
+					].join('\n');
+					act_dom.innerHTML = html;
+				}
+			}
+		}
+	}
+	this.make_filter_html = function(filter){
+		var html = '<li>';
+		html += '<a title="Click to remove this filter" ';
+		html += 'href="javascript:'+ this.obj_name +'.change(\'' + filter['oc-api:remove'] + '\')">';
+		html += filter.label;
+		html += '</li>';
+		return html;
+	}
     this.facets_search = function(){
 		// this function executes a search based on facet-values in check box input elements
 		var query_terms = [];
@@ -612,30 +649,35 @@ function OpenContextFacetsRecsAPI() {
 						'<h3>' + this.title + '</h3>',
 						'</div>',
 						'<div class="col-sm-6">',
-							'<label for="oc-keyword-search">Search Open Context</label>',
-						    '<div class="row">',
-								'<div class="col-xs-6">',
-									'<div class="form-group">',
-									'<input type="search" ',
-									'class="form-control" ',
-									'onchange="' + this.obj_name + '.search();return false;" ',
-									'id="'+ this.keyword_dom_id +'" ',
-									'placeholder="Keyword Search" />',
-									'<p class="help-block">Type a simple keyword search.</p>',
-									'</div>',
-								'</div>',
-								'<div class="col-xs-4" id="' + this.search_button_cont_dom_id + '">',
-									this.make_search_button_html(false),
-								'</div>',
-							'</div>',
+							
 						'</div>',	
 					'</div>',
 				'<div class="row">',    
 					'<div class="col-sm-6">',
+					    '<label for="oc-keyword-search">Search Open Context</label>',
+						'<div class="row">',
+							'<div class="col-xs-6">',
+								'<div class="form-group">',
+								'<input type="search" ',
+								'class="form-control" ',
+								'onchange="' + this.obj_name + '.search();return false;" ',
+								'id="'+ this.keyword_dom_id +'" ',
+								'placeholder="Keyword Search" />',
+								'<p class="help-block">Type a simple keyword search.</p>',
+								'</div>',
+							'</div>',
+							'<div class="col-xs-4" id="' + this.search_button_cont_dom_id + '">',
+								this.make_search_button_html(false),
+							'</div>',
+						'</div>',
 						'<div id="'+ this.facets_dom_id +'">',
 						'</div>',
 					'</div>',
 					'<div class="col-sm-6">',
+						'<div class="row">',
+							'<div class="col-xs-12" id="'+ this.filters_dom_id +'">',
+							'</div>',
+						'</div>',
 						'<div id="'+ this.results_dom_id +'">',
 						'</div>',
 					'</div>',	
