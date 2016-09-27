@@ -696,6 +696,7 @@ function OpenContextFacetsRecsAPI() {
 					'<div class="col-xs-6" id="'+ this.filters_dom_id +'">',
 					'</div>',	
 				'</div>',
+				'</div>',
 				'<div class="row">',    
 					'<div class="col-sm-6">',
 						'<div id="'+ this.facets_dom_id +'">',
