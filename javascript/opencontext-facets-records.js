@@ -409,7 +409,7 @@ function OpenContextFacetsRecsAPI() {
     this.show_facets = function(){
 		if (document.getElementById(this.facets_dom_id)) {
 			var act_dom = document.getElementById(this.facets_dom_id);
-			var html = '';
+			var html = '<h3>Filter Options</h3>';
 			var facets = this.facets;
 			if(facets == null && this.data != null){
 				if('oc-api:has-facets' in this.data){
@@ -612,18 +612,20 @@ function OpenContextFacetsRecsAPI() {
 						'<h3>' + this.title + '</h3>',
 						'</div>',
 						'<div class="col-sm-6">',
-							'<div class="form-group">',
-								'<label for="oc-keyword-search">Search Open Context</label>',
-								'<input type="search" ',
-								'class="form-control" ',
-								'onchange="' + this.obj_name + '.search();return false;" ',
-								'id="'+ this.keyword_dom_id +'" ',
-								'placeholder="Keyword Search" >',
-								'<p class="help-block">Type a simple keyword search.</p>',
-							'</div>',
-							'<div id="' + this.search_button_cont_dom_id + '">',
-							this.make_search_button_html(false),
-							'</div>',
+						    '<form class="form-inline">',
+								'<div class="form-group">',
+									'<label for="oc-keyword-search">Search Open Context</label>',
+									'<input type="search" ',
+									'class="form-control" ',
+									'onchange="' + this.obj_name + '.search();return false;" ',
+									'id="'+ this.keyword_dom_id +'" ',
+									'placeholder="Keyword Search" >',
+									'<p class="help-block">Type a simple keyword search.</p>',
+								'</div>',
+								'<div id="' + this.search_button_cont_dom_id + '">',
+								this.make_search_button_html(false),
+								'</div>',
+							'</form>',
 						'</div>',	
 					'</div>',
 				'<div class="row">',    
