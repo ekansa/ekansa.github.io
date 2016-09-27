@@ -51,6 +51,10 @@ function OpenContextFacetsRecsAPI() {
 		'facet-prop-oc-gen-subjects',
 		'related-media'
 	]; //list of the facet (ids) we do NOT want to display
+	this.ignore_filter_labels = [
+		'Bade Museum',
+		'Object',
+	]; //list of filter labels to ignore (do not display)
     this.previous_link = null;
     this.next_link = null;
 	this.search = function(){
@@ -527,19 +531,37 @@ function OpenContextFacetsRecsAPI() {
 			if ('oc-api:active-filters' in data) {
 				// the data has filters
 				if(data['oc-api:active-filters'].length > 0){
-					var f_html = '';
+					var f_html_list = [];
 					for (var i = 0, length = data['oc-api:active-filters'].length; i < length; i++) {
 						var filter = data['oc-api:active-filters'][i];
-						f_html += this.make_filter_html(filter);
+						var display_filter = true;
+						if(this.ignore_filter_labels.length > 0){
+							for (var j = 0, ig_length = this.ignore_filter_labels.length; j < ig_length; j++) {
+								var ig_label = this.ignore_filter_labels[j];
+								if (ig_label == filter.label){
+									display_filter = false;
+								}
+							}	
+						}
+						if(display_filter){
+							var f_html = this.make_filter_html(filter);
+							f_html_list.push(f_html);
+						}
 					}
-					var html = [
-					'<div class="well small">',
-						'<h4>Filters on the data</h4>',
-						'<ul>',
-						f_html,
-						'</ul>',
-					'</div>',
-					].join('\n');
+					if(f_html_list.length > 0){
+						var filters_html = f_html_list.join('\n');
+						var html = [
+						'<div class="well small">',
+							'<h4>Filters on the data</h4>',
+							'<ul>',
+							filters_html,
+							'</ul>',
+						'</div>',
+						].join('\n');
+					}
+					else{
+						var html = '';	
+					}
 					act_dom.innerHTML = html;
 				}
 			}
@@ -645,16 +667,12 @@ function OpenContextFacetsRecsAPI() {
 			var html = [
 			'<div class="container-fluid">',
 				'<div class="row">',    
-						'<div class="col-sm-6">',
-						'<h3>' + this.title + '</h3>',
-						'</div>',
-						'<div class="col-sm-6" id="'+ this.filters_dom_id +'">',
-							
-						'</div>',	
+					'<div class="col-sm-12">',
+					'<h3>' + this.title + '</h3>',
 					'</div>',
-				'<div class="row">',    
-					'<div class="col-sm-6">',
-					    '<label for="oc-keyword-search">Search Open Context</label>',
+				'</div>',
+				'<div class="row">',
+				    '<div class="col-sm-6>',
 						'<div class="row">',
 							'<div class="col-xs-6">',
 								'<div class="form-group">',
@@ -670,14 +688,17 @@ function OpenContextFacetsRecsAPI() {
 								this.make_search_button_html(false),
 							'</div>',
 						'</div>',
+					'</div>',
+					'<div class="col-sm-6" id="'+ this.filters_dom_id +'">',
+							
+					'</div>',	
+				'</div>',
+				'<div class="row">',    
+					'<div class="col-sm-6">',
 						'<div id="'+ this.facets_dom_id +'">',
 						'</div>',
 					'</div>',
 					'<div class="col-sm-6">',
-						'<div class="row">',
-							'<div class="col-xs-12">',
-							'</div>',
-						'</div>',
 						'<div id="'+ this.results_dom_id +'">',
 						'</div>',
 					'</div>',	
