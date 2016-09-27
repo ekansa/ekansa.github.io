@@ -614,7 +614,7 @@ function OpenContextFacetsRecsAPI() {
 						'<div class="col-sm-6">',
 							'<label for="oc-keyword-search">Search Open Context</label>',
 						    '<div class="row">',
-								'<div class="col-xs-8">',
+								'<div class="col-xs-6">',
 									'<div class="form-group">',
 									'<input type="search" ',
 									'class="form-control" ',
