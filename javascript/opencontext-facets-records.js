@@ -42,9 +42,14 @@ function OpenContextFacetsRecsAPI() {
 	this.record_start = 0;  // the start number for the results
 	this.record_rows = 24;  // the number of rows returned in a search result
     this.start_faceturl = 'https://opencontext.org/subjects-search/?proj=14-bade-museum';
-	this.show_all_facets = true; //show all facts, not only those in the show_only_facets list
 	this.show_checkbox_facets = false; //do checkbox facet searches
-    this.show_only_facets = []; //list of the facets we want to display on the page
+    this.show_only_facets = [
+	
+	]; //list of the facets we want to display on the page
+	this.ignore_facets_ids = [
+		'#facet-prop-oc-gen-subjects',
+		'#related-media'
+	]; //list of the facet (ids) we do NOT want to display
     this.previous_link = null;
     this.next_link = null;
 	this.search = function(){
@@ -415,18 +420,30 @@ function OpenContextFacetsRecsAPI() {
 				// show some search facets
 				for (var i = 0, length = facets.length; i < length; i++) {
 					var facet = facets[i];
-					if(this.show_all_facets){
-						var facet_html = this.make_facet_panel_html(facet);
-						html += facet_html;
-					}
-					else{
+					var show_facet = true;
+					if(this.show_only_facets.length > 0){
+						// default to do not show
+						show_facet = false;
 						for (var j = 0, sf_length = this.show_only_facets.length; j < sf_length; j++) {
-							var show_facet = this.show_only_facets[j];
-							if(facet.label == show_facet ){
-							   var facet_html = this.make_facet_panel_html(facet);
-							   html += facet_html;
+							var show_facet_label = this.show_only_facets[j];
+							if(facet.label == show_facet_label ){
+							   show_facet = true;
 							}
 						}
+					}
+					if(this.ignore_facets_ids > 0){
+						// we are defaulted to show
+						for (var j = 0, sf_length = this.ignore_facets_ids.length; j < sf_length; j++) {
+							var ignore_facet_id = this.ignore_facets_ids[j];
+							if(facet.id == ignore_facet_id){
+								//id matches an ignore id, do not show
+							   show_facet = false;
+							}
+						}
+					}
+					if(show_facet){
+						var facet_html = this.make_facet_panel_html(facet);
+						html += facet_html;
 					}
 				}
 			}
@@ -479,7 +496,8 @@ function OpenContextFacetsRecsAPI() {
     this.make_facet_val_link = function(facet, val_item){
 		var html = [
 			'<a href="javascript:'+ this.obj_name +'.change(\''+ val_item.id + '\');" ',
-			'title="Filter collection by this value" >'+ val_item.label + '</a>'
+			'title="Filter collection by this value" >'+ val_item.label + '</a>',
+			' (' + val_item.count + ')'
 		].join('\n');
 		return html;
 	}
