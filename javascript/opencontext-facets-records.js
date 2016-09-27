@@ -552,7 +552,7 @@ function OpenContextFacetsRecsAPI() {
 						var filters_html = f_html_list.join('\n');
 						var html = [
 						'<div class="well small">',
-							'<h4>Filters on the data</h4>',
+							'<h4 style="margin-top:-12px;">Collection Filtered By</h4>',
 							'<ul>',
 							filters_html,
 							'</ul>',
